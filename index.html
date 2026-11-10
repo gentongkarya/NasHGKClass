@@ -464,7 +464,7 @@
       if (displayLang === 'id') node.nodeValue = originalText;
       else { const trimmed = originalText.trim(); node.nodeValue = translations[trimmed] ? originalText.replace(trimmed, translations[trimmed]) : originalText; }
     });
-    const placeholders = { parentName:['Contoh: Bapak Albert','e.g. Mr. Albert'], parentWa:['Contoh: 08123456789','e.g. +62 812 3456 789'], childName:['Contoh: Einstein','e.g. Alex'], childAge:['Contoh: 8','e.g. 8'], childCondition:['Contoh: Suka menggambar, agak cepat bosan jika materi teori terlalu lama','e.g. Enjoys drawing and prefers short, varied activities'], learningGoal:['Contoh: Persiapan lomba gambar digital / memperlancar calistung','e.g. Learn conversational Indonesian / prepare for an art competition'] };
+    const placeholders = { parentName:['Contoh: Bapak Albert','e.g. Mr. Albert'], parentWa:['Contoh: 08123456789','e.g. +62 812 3456 789'], childName:['Contoh: Einstein','e.g. Einstein'], childAge:['Contoh: 8','e.g. 8'], childCondition:['Contoh: Suka menggambar, agak cepat bosan jika materi teori terlalu lama','e.g. Enjoys drawing and prefers short, varied activities'], learningGoal:['Contoh: Persiapan lomba gambar digital / memperlancar calistung','e.g. Learn conversational Indonesian / prepare for an art competition'] };
     Object.entries(placeholders).forEach(([id,pair]) => { $(id).placeholder = displayLang==='en' ? pair[1] : pair[0]; });
     $('languageHint').textContent = displayLang === 'en'
       ? 'For international learners: switch to English for an English-language form. English will be used as the lesson language automatically. You can also learn Bahasa Indonesia.'
