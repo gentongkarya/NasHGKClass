@@ -961,12 +961,30 @@
       alert('Fitur simpan gambar membutuhkan koneksi internet. Coba muat ulang halaman ini.');
       return;
     }
-    html2canvas($('receipt'), { scale: 2, backgroundColor: '#FAF6E6' }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'Nota-' + currentOrder.no + '.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+    html2canvas($('#receipt'), { scale: 2, backgroundColor: '#FAF6E6' }).then(canvas => {
+  const imageData = canvas.toDataURL('image/png');
+  
+  // 1. Download nota ke HP/Laptop klien
+  const link = document.createElement('a');
+  link.download = 'Nota-' + currentOrder.no + '.png';
+  link.href = imageData;
+  link.click();
+
+  // 2. Kirim otomatis ke Google Drive milikmu via Apps Script
+  fetch('https://script.google.com/macros/s/AKfycbyolkFfiVSMS-_MrLkAP6JxIaQrZCRgPZG_W8Kszcbe525ypJWCF7hWvQqOrY318Mg7wg/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageData,
+      filename: 'Nota-' + currentOrder.no + '.png'
+    })
+  })
+  .then(() => console.log('Nota tersimpan ke Google Drive!'))
+  .catch(err => console.error('Gagal simpan ke Drive:', err));
+});
   }
 
   // ---------- Event ----------
