@@ -365,7 +365,11 @@
 
     <div class="receipt" id="receipt">
       <div class="receipt-head">
-        <img src="mascot-boa-nashgk.png" alt="Mascot BoA" style="width: auto !important; max-width: 64px !important; height: auto !important; object-fit: contain !important; display: block; margin: 0 auto 8px auto;">
+        <svg class="receipt-mark" viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="#454135" stroke-width="3.2">
+      <rect x="6" y="6" width="70" height="70" rx="18" fill="#8D9758" stroke="none"/>
+      <circle cx="74" cy="74" r="34"/>
+      <circle cx="98" cy="22" r="8" fill="#454135" stroke="none"/>
+    </svg>
         <div class="receipt-brand">NasH GK</div>
         <div class="receipt-sub">Nota pemesanan les privat</div>
         <div class="receipt-sub" id="rDate"></div>
@@ -460,7 +464,7 @@
       if (displayLang === 'id') node.nodeValue = originalText;
       else { const trimmed = originalText.trim(); node.nodeValue = translations[trimmed] ? originalText.replace(trimmed, translations[trimmed]) : originalText; }
     });
-    const placeholders = { parentName:['Contoh: Bapak Albert','e.g. Mr. Albert'], parentWa:['Contoh: 08123456789','e.g. +62 812 3456 789'], childName:['Contoh: Einstein','e.g. Einstein'], childAge:['Contoh: 8','e.g. 8'], childCondition:['Contoh: Suka menggambar, agak cepat bosan jika materi teori terlalu lama','e.g. Enjoys drawing and prefers short, varied activities'], learningGoal:['Contoh: Persiapan lomba gambar digital / memperlancar calistung','e.g. Learn conversational Indonesian / prepare for an art competition'] };
+    const placeholders = { parentName:['Contoh: Bapak Albert','e.g. Mr. Albert'], parentWa:['Contoh: 08123456789','e.g. +62 812 3456 789'], childName:['Contoh: Einstein','e.g. Alex'], childAge:['Contoh: 8','e.g. 8'], childCondition:['Contoh: Suka menggambar, agak cepat bosan jika materi teori terlalu lama','e.g. Enjoys drawing and prefers short, varied activities'], learningGoal:['Contoh: Persiapan lomba gambar digital / memperlancar calistung','e.g. Learn conversational Indonesian / prepare for an art competition'] };
     Object.entries(placeholders).forEach(([id,pair]) => { $(id).placeholder = displayLang==='en' ? pair[1] : pair[0]; });
     $('languageHint').textContent = displayLang === 'en'
       ? 'For international learners: switch to English for an English-language form. English will be used as the lesson language automatically. You can also learn Bahasa Indonesia.'
@@ -961,26 +965,12 @@
       alert('Fitur simpan gambar membutuhkan koneksi internet. Coba muat ulang halaman ini.');
       return;
     }
-    html2canvas($('#receipt'), { scale: 2, backgroundColor: '#FAF6E6' }).then(canvas => {
-  const imageData = canvas.toDataURL('image/png');
-  
-  // 1. Download nota ke HP/Laptop klien
-  const link = document.createElement('a');
-  link.download = 'Nota-' + currentOrder.no + '.png';
-  link.href = imageData;
-  link.click();
-
-  // 2. Kirim otomatis ke Google Drive milikmu via Apps Script
-  const payload = new URLSearchParams();
-  payload.append('image', imageData);
-  payload.append('filename', 'Nota-' + currentOrder.no + '.png');
-
-  fetch('https://script.google.com/macros/s/AKfycbyolkFfiVSMS-_MrLkAP6JxIaQrZCRgPZG_W8Kszcbe525ypJWCF7hwvQqOrY318Mg7wg/exec', {
-    method: 'POST',
-    body: payload
-  })
-  .then(() => console.log('Nota tersimpan ke Google Drive!'))
-  .catch(err => console.error('Gagal simpan ke Drive:', err));
+    html2canvas($('receipt'), { scale: 2, backgroundColor: '#FAF6E6' }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'Nota-' + currentOrder.no + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
   }
 
   // ---------- Event ----------
