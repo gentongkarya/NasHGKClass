@@ -971,20 +971,16 @@
   link.click();
 
   // 2. Kirim otomatis ke Google Drive milikmu via Apps Script
-  fetch('https://script.google.com/macros/s/AKfycbyolkFfiVSMS-_MrLkAP6JxIaQrZCRgPZG_W8Kszcbe525ypJWCF7hWvQqOrY318Mg7wg/exec', {
+  const payload = new URLSearchParams();
+  payload.append('image', imageData);
+  payload.append('filename', 'Nota-' + currentOrder.no + '.png');
+
+  fetch('https://script.google.com/macros/s/AKfycbyolkFfiVSMS-_MrLkAP6JxIaQrZCRgPZG_W8Kszcbe525ypJWCF7hwvQqOrY318Mg7wg/exec', {
     method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      image: imageData,
-      filename: 'Nota-' + currentOrder.no + '.png'
-    })
+    body: payload
   })
   .then(() => console.log('Nota tersimpan ke Google Drive!'))
   .catch(err => console.error('Gagal simpan ke Drive:', err));
-});
   }
 
   // ---------- Event ----------
